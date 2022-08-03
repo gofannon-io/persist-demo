@@ -5,45 +5,69 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
+import java.time.Clock;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
 public class AbstractEntityListener {
 
-    //private Clock clock = Clock.systemUTC();
+    public static final AtomicInteger INSTANCE_COUNT = new AtomicInteger();
+    public static final AtomicInteger ON_CREATION_COUNT = new AtomicInteger();
+    public static final AtomicInteger ON_UPDATE_COUNT = new AtomicInteger();
 
-    private ClockProvider clockProvider;
-    static AtomicInteger creationId = new AtomicInteger();
+    private Clock clock;
 
-    @Autowired
+    private int instanceId;
+
     public AbstractEntityListener() {
-        System.out.println("AbstractEntityListener " + creationId.getAndIncrement());
+        instanceId = INSTANCE_COUNT.incrementAndGet();
+        System.out.println("AbstractEntityListener::create instance "+instanceId);
     }
 
     @Autowired
     public void setClockProvider(ClockProvider clockProvider) {
-        this.clockProvider = clockProvider;
+        this.clock = clockProvider.getClock();
     }
 
-    @PrePersist
-    public void onCreation(Object entity) {
-        Date now = new Date(clockProvider.getClock().millis());
 
-        if (entity instanceof AbstractEntity entity1) {
-            if (entity1.getCreationDate() == null) {
-                entity1.setCreationDate(now);
-            }
-            entity1.setUpdateDate(now);
+//    @PrePersist
+//    @PreUpdate
+//    public void onCreationOrUpdate(Object rawEntity) {
+//        if (rawEntity instanceof AbstractEntity typedEntity) {
+//            Date now = now();
+//            ON_CREATION_COUNT.incrementAndGet();
+//            if (typedEntity.getCreationDate() == null) {
+//                typedEntity.setCreationDate(now);
+//            }
+//            typedEntity.setUpdateDate(now);
+//        }
+//    }
+
+    @PrePersist
+    public void onCreation(Object rawEntity) {
+        if (rawEntity instanceof AbstractEntity typedEntity) {
+            Date now = now();
+            ON_CREATION_COUNT.incrementAndGet();
+                typedEntity.setCreationDate(now);
+            typedEntity.setUpdateDate(now);
         }
+    }
+
+    private Date now() {
+        return new Date(clock.millis());
     }
 
 
     @PreUpdate
     public void onUpdate(Object entity) {
-        Date now = new Date(clockProvider.getClock().millis());
-        if (entity instanceof AbstractEntity) {
-            ((AbstractEntity) entity).setUpdateDate(now);
+        if (entity instanceof AbstractEntity typedEntity) {
+            Date now = now();
+            ON_UPDATE_COUNT.incrementAndGet();
+            if( typedEntity.getCreationDate()==null) {
+                typedEntity.setCreationDate(now);
+            }
+            typedEntity.setUpdateDate(now);
         }
     }
 

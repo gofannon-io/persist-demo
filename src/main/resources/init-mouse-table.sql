@@ -1,0 +1,13 @@
+CREATE TABLE MOUSE
+(
+    id            INTEGER      NOT NULL,
+    name          VARCHAR2(50) NOT NULL,
+    creation_date DATETIME     NOT NULL,
+    update_date   DATETIME     NOT NULL,
+    PRIMARY KEY (id)
+);
+
+INSERT INTO MOUSE (ID, NAME, CREATION_DATE, UPDATE_DATE)
+VALUES (100, 'Minnie', NOW(), NOW());
+INSERT INTO MOUSE (ID, NAME, CREATION_DATE, UPDATE_DATE)
+VALUES (101, 'Yuki', NOW(), NOW());

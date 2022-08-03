@@ -6,12 +6,19 @@ import javax.persistence.Entity;
 @Entity
 public class Person extends AbstractEntity {
 
-    @Column(name="firstname", nullable = false)
+    @Column(name = "firstname", nullable = false)
     private String firstname;
 
-    @Column(name="lastname", nullable = false)
+    @Column(name = "lastname", nullable = false)
     private String lastname;
 
+    public Person() {
+    }
+
+    public Person(String firstname, String lastname) {
+        this.firstname = firstname;
+        this.lastname = lastname;
+    }
 
     public String getFirstname() {
         return firstname;

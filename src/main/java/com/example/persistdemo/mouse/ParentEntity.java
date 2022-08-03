@@ -1,29 +1,30 @@
-package com.example.persistdemo;
+package com.example.persistdemo.mouse;
 
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Objects;
 
-@Entity
-@EntityListeners(AbstractEntityListener.class)
-public class AbstractEntity {
 
+@MappedSuperclass
+@EntityListeners(ParentEntityListener.class)
+public abstract class ParentEntity {
     @Id
-    //@GeneratedValue
     private int id;
 
     @Column(name = "creation_date")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date creationDate;
 
     @Column(name = "update_date")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date updateDate;
-
-    public int getId() {
-        return id;
-    }
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public Date getCreationDate() {
@@ -45,8 +46,8 @@ public class AbstractEntity {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof AbstractEntity that)) return false;
-        return id == that.id;
+        if (!(o instanceof ParentEntity that)) return false;
+        return Objects.equals(id, that.id);
     }
 
     @Override
