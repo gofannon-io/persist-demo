@@ -1,0 +1,36 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+
+abstract class ParentEntity {
+    Integer id
+    Date creationDate
+    Date updateDate
+}
+
+abstract class Mouse {
+    String name
+
+}
+
+ParentEntity <|-- Mouse
+
+
+class ParentEntityListener {
+    Clock clock
+
+    setClockProvider( ClockProvider clockProvider )
+    onCreation( Mouse mouseEntity )
+    onUpdate( Mouse mouseEntity )
+}
+
+
+interface ClockProvider {
+    Clock getClock()
+}
+
+ParentEntityListener "fill date fields" --> ParentEntity
+ParentEntityListener <-- "Injected" ClockProvider
+
+
+@enduml

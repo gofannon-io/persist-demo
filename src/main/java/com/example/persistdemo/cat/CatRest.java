@@ -1,7 +1,7 @@
 package com.example.persistdemo.cat;
 
-import com.example.persistdemo.common.PetUpdate;
 import com.example.persistdemo.common.ErrorResponse;
+import com.example.persistdemo.common.PetUpdate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

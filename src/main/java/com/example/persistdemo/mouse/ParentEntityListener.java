@@ -41,7 +41,7 @@ public class ParentEntityListener {
     public void onCreation(Object rawEntity) {
         if (rawEntity instanceof Mouse typedEntity) {
             System.out.println("onCreation " + rawEntity);
-            ON_CREATION_TRACES.add(toTrace(typedEntity));
+            ON_CREATION_TRACES.add("Create mouse " + typedEntity.getName() + " (id=" + typedEntity.getId() + ") from listener " + instanceId);
             Date now = now();
             typedEntity.setCreationDate(now);
             typedEntity.setUpdateDate(now);
@@ -60,7 +60,7 @@ public class ParentEntityListener {
     public void onUpdate(Object rawEntity) {
         if (rawEntity instanceof Mouse typedEntity) {
             System.out.println("onUpdate " + rawEntity);
-            ON_UPDATE_TRACES.add(toTrace(typedEntity));
+            ON_UPDATE_TRACES.add("Update mouse " + typedEntity.getName() + " (id=" + typedEntity.getId() + ") from listener " + instanceId);
             Date now = now();
             typedEntity.setUpdateDate(now);
         }

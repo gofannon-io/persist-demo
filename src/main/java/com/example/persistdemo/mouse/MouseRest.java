@@ -3,7 +3,10 @@ package com.example.persistdemo.mouse;
 import com.example.persistdemo.common.ApplicationLog;
 import com.example.persistdemo.common.ErrorResponse;
 import com.example.persistdemo.common.PetUpdate;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,15 +16,16 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("mice")
-public class MouseRest {
+public class MouseRest implements ApplicationContextAware {
 
     private MouseRepository repository;
 
     private ParentEntityListener listener;
 
-    @Autowired
-    public void setListener(ParentEntityListener listener) {
-        this.listener = listener;
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.listener = applicationContext.getBean(ParentEntityListener.class);
     }
 
     @Autowired
@@ -79,26 +83,5 @@ public class MouseRest {
         applicationLog.setOnUpdateTraces(ParentEntityListener.ON_UPDATE_TRACES);
         applicationLog.setListenerId(listener.getInstanceId());
         return applicationLog;
-    }
-
-
-    @GetMapping(value = "log/creation", produces = "application/json")
-    public List<String> getLogCreationTraces() {
-        return ParentEntityListener.ON_CREATION_TRACES;
-    }
-
-    @GetMapping(value = "log/update", produces = "application/json")
-    public List<String> getLogUpdateTraces() {
-        return ParentEntityListener.ON_UPDATE_TRACES;
-    }
-
-    @GetMapping(value = "log/instance", produces = "application/json")
-    public List<String> getLogInstanceTraces() {
-        return ParentEntityListener.INSTANCE_CREATION_TRACES;
-    }
-
-    @GetMapping(value = "listener", produces = "application/json")
-    public String getListenerId() {
-        return "{ \"listenerId\": "+ listener.getInstanceId()+"}";
     }
 }

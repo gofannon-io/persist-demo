@@ -1,21 +1,21 @@
-package com.example.persistdemo.dog;
+package com.example.persistdemo.parrot;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "DOG")
-public class Dog extends ParentEntity {
+@Table(name = "PARROT")
+public class Parrot extends ParentEntity {
 
 
     @Column(name = "name")
     private String name;
 
-    public Dog() {
+    public Parrot() {
     }
 
-    public Dog(int id, String name) {
+    public Parrot(int id, String name) {
         setId(id);
         this.name = name;
     }

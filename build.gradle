@@ -24,3 +24,7 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+wrapper {
+    gradleVersion = '7.5.1'
+}
