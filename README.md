@@ -570,6 +570,7 @@ Les tests sont "successful":
   **ParrotEntityListener**.
 * L'appel de **ParrotRepository.save(Parrot)** pour une entité préexistante appelle bien la méthode @PreUpdate de
   l'instance **ParrotEntityListener**.
+* Il est possible d'effectuer au sein du même test une création et une mise à jour de la même Entity.
 
 
 ### Conclusion 

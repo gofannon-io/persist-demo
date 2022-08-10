@@ -6,6 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.transaction.TestTransaction;
 
 import javax.persistence.EntityManager;
 
@@ -63,5 +64,28 @@ class ParrotRepositoryTest {
         assertThat(ParentEntityListener.ON_UPDATE_TRACES)
                 .hasSize(1)
                 .contains("100|Echo");
+    }
+
+
+    @Test
+    @DisplayName("Shall call onUpdate when an entity is updated (2)")
+    public void save_2_shallCallOnUpdateWhenSavingAnExistingEntity() {
+        Parrot parrot = new Parrot(10, "Péco");
+        repository.save(parrot);
+        entityManager.flush();
+
+
+        Parrot parrot2 = new Parrot(10, "Pépé");
+        repository.save(parrot2);
+        entityManager.flush();
+
+
+        assertThat(ParentEntityListener.ON_CREATION_TRACES)
+                .hasSize(1)
+                .contains("10|Péco");
+
+        assertThat(ParentEntityListener.ON_UPDATE_TRACES)
+                .hasSize(1)
+                .contains("10|Pépé");
     }
 }
