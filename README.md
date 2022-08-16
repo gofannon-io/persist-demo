@@ -1,10 +1,14 @@
 # Projet persist-demo
 
 ## Aperçu
-Ce projet est une évaluation de l'usage de @EntityListeners, une annotation JPA qui permet de suivre le cycle de vie des
-Entities JPA.
+Ce projet est une évaluation de l'usage de [@EntityListeners](https://javadoc.io/static/javax/javaee-web-api/8.0/javax/persistence/EntityListeners.html).
+Cette annotation JPA permet de suivre le cycle de vie des Entities JPA (création, modification, suppression, etc.) en 
+posant des annotations sur des méthodes qui acceptent en argument l'entité concernée.
+Ces annotations permettent différentes choses, comme le logging des interactions de persistance des entités, de modifier 
+les entités avant ou après un événement dans leur cycle de vie, etc. 
 
 Cette évaluation se doublera d'un démonstrateur et de tests afin de justifier l'évaluation.
+
 Les sujets à traiter sont&nbsp;:
 
 * [S1] l'intégration à Spring et notamment les Spring Bean
@@ -31,19 +35,16 @@ Les sujets à traiter sont&nbsp;:
 
 ## Cadre
 
-persist-demo est un projet de type application Spring avec les supports de Web, JPA (Implementation Hibernate) et une
+**persist-demo** est un projet de type application Spring avec les supports de Web, JPA (Implementation Hibernate) et une
 base de données SQL (H2).
+
 Ce projet fournit donc la possibilité de proposer des services REST afin d'exécuter du code de production.
 Il permet également de faire des tests unitaires via les librairies fournies par Spring.
 
 
 
-
-
 # Module Cat
-
 ## Contenu
-
 Package: com.example.persistdemo.cat
 
 Fournit des End-Point REST dans la classe CatRest.
@@ -64,6 +65,11 @@ Faire un exemple simple en production pour vérifier que l'EntityListener est bi
 mise à jour d'une Entity. 
 Cela correspond à S2, S2.1, S2.2.
 
+## Aperçu de l'implémentation
+
+![Diagramme des classes Cat](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/gofannon-io/persist-demo/master/src/doc/cat/cat-design.puml)
+
+Dans cette implémentation, c'est la classe d'Entity, **Cat**, qui référence directement l'EventListener, **CatEventListener**. 
 
 ## Test Cat.1
 
@@ -118,7 +124,9 @@ Réponse:
 
 ### Conclusion du test
 
-[S2.1] validé
+* [S2] la mise à jour de l'Entity via l'EntityListener fonctionne
+  * [S2.1] :thumbup: lors de la création de l'Entity
+
 
 ## Test Cat.2
 
@@ -173,7 +181,8 @@ Réponse:
 
 ### Conclusion du test
 
-[S2.2] validé
+* [S2] la mise à jour de l'Entity via l'EntityListener fonctionne
+  * [S2.2] :thumbup: lors de la mise à jour de l'Entity
 
 ## Conclusion du module
 * [S2] :thumbsup: la mise à jour de l'Entity via l'EntityListener fonctionne 
@@ -204,6 +213,13 @@ Exemple de body:
 Faire un exemple avec héritage en production pour vérifier que l'EntityListener est bien appelé lors de la mise à
 jour d'une Entity.
 Cela correspond à S3, S3.1, S3.2.
+
+## Aperçu de l'implémentation
+
+![Diagramme des classes Dog](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/gofannon-io/persist-demo/master/src/doc/dog/dog-design.puml)
+
+Dans cette implémentation, c'est une classe parent d'Entity, **ParentEntity**, qui référence l'EventListener, **ParentEventListener**.
+Ainsi le **ParentEntityListener** agira sur la partie **ParentEntity** et pas celle sur la partie propre à **Dog**.
 
 
 ## Test Dog.1
@@ -248,7 +264,9 @@ Réponse:
 ```
 
 ### Conclusion du test
-[S3.1] validé
+* [S3] la mise à jour de l'Entity via l'EntityListener fonctionne avec le parent de l'Entity portant l'annotation
+@EntityListeners
+  * [S3.1] :thumbup: lors de la création de l'Entity
 
 
 ## Test Dog.2
@@ -293,7 +311,9 @@ Réponse:
 ```
 
 ### Conclusion du test
-[S3.2] validé
+* [S3] la mise à jour de l'Entity via l'EntityListener fonctionne avec le parent de l'Entity portant l'annotation
+  @EntityListeners
+  * [S3.2] :thumbup: lors de la mise à jour de l'Entity
 
 
 ## Conclusion du module
@@ -339,7 +359,7 @@ Cela correspond à&nbsp;:
   * [S5.2] Est-ce que la mise à jour de l'Entity fonctionne ?
 
 
-## Notes d'implémentation
+## Aperçu de l'implémentation
 La classe **Mouse** hérite de **ParentEntity**. **ParentEntity** contient 3 champs&nbsp;: **id**, **creationDate** et 
 **updateDate**.
 Ces deux derniers champs sont à remplir par l'EntityListener, à savoir **ParentEntityListener**.
@@ -355,7 +375,7 @@ traçant l'usage du **ClockProvider** pour remplir les champs **creationDate** e
 L'accès via Spring au bean **ParentEntityListener** ne fonctionne pas quand il n'y a pas d'annotation **@Component** ou
 une de ses dérivées, **@Service** par exemple.
 
-![Diagramme des classes JPA Entity, EntityListener et d'injection Spring ](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/gofannon-io/persist-demo/master/src/doc/mouse/ListenerEnv.puml)
+![Diagramme des classes JPA Entity, EntityListener et d'injection Spring](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/gofannon-io/persist-demo/master/src/doc/mouse/ListenerEnv.puml)
 
 
 ## Test Mouse.1
@@ -441,6 +461,10 @@ Les logs contiennent des informations importantes&nbsp;:
     cycle de vie des **ParentEntity**.
   * La seconde est créée par Spring et est accessible via le registre Spring 
 
+* [S1] l'intégration à Spring et notamment les Spring Bean
+  * [S1.2] :thumbsup: Est-ce qu'il est possible d'injecter un bean Spring dans un EntityListener ? Oui
+* [S5] le support complet en prod (ie pas en test)
+  * [S5.1] :thumbsup: Est-ce que la création de l'Entity fonctionne ? Oui.
 
 
 ## Test Mouse.2
@@ -497,6 +521,12 @@ Les logs contiennent des informations importantes qui confirment les information
 Logiquement, la conclusion est identique à celle du test Mouse.1, à savoir que les mises à jour sont effectuées par le 
 listener 1, celui qui est instancié par JPA/Hibernate, mais qui n'est pas accessible par Spring.
 
+* [S1] l'intégration à Spring et notamment les Spring Bean
+  * [S1.1] :thumbsdown: Est-ce qu'un EntityListener peut être un bean Spring ? Non
+  * [S1.2] :thumbsup: Est-ce qu'il est possible d'injecter un bean Spring dans un EntityListener ? Oui
+* [S5] le support complet en prod (ie pas en test)
+  * [S5.2] :thumbsup: Est-ce que la mise à jour de l'Entity fonctionne ? Oui.
+
 
 ## Conclusion du module
 L'instance de **ParentEntityListener**, utilisée pour la mise à jour des champs de **ParentEntity**, est créée par 
@@ -550,6 +580,16 @@ Démontrer la faisabilité des points suivants&nbsp;:
 * [S4] le support de tests unitaires
   * [S4.1] Est-ce possible de tester la création de l'Entity ?
   * [S4.2] Est-ce possible de tester la mise à jour de l'Entity ?
+
+
+## Aperçu de l'implémentation
+
+![Diagramme des classes Parrot](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/gofannon-io/persist-demo/master/src/doc/parrot/parrot-design.puml)
+
+Dans cette implémentation est similaire en tout point à celle de **Mouse**. 
+Les nouveautés se situent au niveau des tests unitaires.
+
+
 
 
 ## Test Parrot.1
@@ -612,4 +652,6 @@ Tous les points ont été satisfaits&nbsp;:
   * [S5.2] :thumbsup: Est-ce que la mise à jour de l'Entity fonctionne ?
 
 
-L'usage des annotations **@PrePersist** et **OnUpdate** sur des classes parent d'Entities est validé.
+L'usage de l'annotation @EntityListener (avec des annotations **@PrePersist** et **OnUpdate**) sur des classes parent 
+d'Entities est validé. 
+De ce fait, il est très probable que les autres annotations (**@PostPersit**, etc.) fonctionnent pareillement. 

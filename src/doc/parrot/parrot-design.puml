@@ -1,0 +1,32 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+
+abstract class ParentEntity {
+    id : Int
+}
+
+class Parrot {
+    name : String
+}
+
+class ParentEntityListener {
+    onCreation(ParentEntity)
+    onUpdate(ParentEntity)
+}
+
+
+interface ParrotRepository {
+    save(Parrot)
+}
+
+class ParrotRepositoryImpl {
+    save(Parrot)
+}
+
+ParentEntity <|-- Parrot
+ParentEntity --> ParentEntityListener : reference
+ParrotRepositoryImpl --> ParentEntityListener : call
+ParrotRepository <|-- ParrotRepositoryImpl
+
+@enduml

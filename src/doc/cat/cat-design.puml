@@ -1,0 +1,28 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+
+class Cat {
+    id : Int
+    name : String
+}
+
+class CatEntityListener {
+    onCreation(Cat)
+    onUpdate(Cat)
+}
+
+
+interface CatRepository {
+    save(Cat)
+}
+
+class CatRepositoryImpl {
+    save(Cat)
+}
+
+Cat --> CatEntityListener : reference
+CatRepositoryImpl --> CatEntityListener : call
+CatRepository <|-- CatRepositoryImpl
+
+@enduml
