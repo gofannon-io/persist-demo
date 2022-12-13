@@ -44,4 +44,11 @@ public class Mouse extends ParentEntity {
         this.name = name;
     }
 
+    @Override
+    public String toString() {
+        return "Mouse{" +
+                "id="+getId()+','+
+                "name='" + name + '\'' +
+                '}';
+    }
 }

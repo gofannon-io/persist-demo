@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.example.persistdemo.parrot;
 
 import javax.persistence.Column;
@@ -43,4 +42,11 @@ public class Parrot extends ParentEntity {
         this.name = name;
     }
 
+    @Override
+    public String toString() {
+        return "Parrot{" +
+                "id="+getId()+","+
+                "name='" + name + '\'' +
+                '}';
+    }
 }

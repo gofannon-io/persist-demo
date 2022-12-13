@@ -20,8 +20,8 @@ class ParentEntityListener {
     Clock clock
 
     setClockProvider( ClockProvider clockProvider )
-    onCreation( Mouse mouseEntity )
-    onUpdate( Mouse mouseEntity )
+    onCreation( ParentEntity entity )
+    onUpdate( ParentEntity entity )
 }
 
 

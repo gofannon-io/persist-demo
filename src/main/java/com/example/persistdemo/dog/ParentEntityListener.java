@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.example.persistdemo.dog;
 
 
@@ -29,21 +28,17 @@ public class ParentEntityListener {
 
     @PrePersist
     public void onCreation(Object rawEntity) {
-        if (rawEntity instanceof Dog typedEntity) {
+        if (rawEntity instanceof ParentEntity typedEntity) {
             System.out.println("onCreation "+rawEntity);
-            ON_CREATION_TRACES.add(toTrace(typedEntity));
+            ON_CREATION_TRACES.add(typedEntity.toString());
         }
-    }
-
-    private static String toTrace(Dog typedEntity) {
-        return typedEntity.getId() + "|" + typedEntity.getName();
     }
 
     @PreUpdate
     public void onUpdate(Object rawEntity) {
-        if (rawEntity instanceof Dog typedEntity) {
+        if (rawEntity instanceof ParentEntity typedEntity) {
             System.out.println("onUpdate "+rawEntity);
-            ON_UPDATE_TRACES.add(toTrace(typedEntity));
+            ON_UPDATE_TRACES.add(typedEntity.toString());
         }
     }
 }

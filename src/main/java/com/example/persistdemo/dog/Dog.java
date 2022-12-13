@@ -35,4 +35,11 @@ public class Dog extends ParentEntity {
         this.name = name;
     }
 
+    @Override
+    public String toString() {
+        return "Dog{" +
+                "id="+getId()+','+
+                "name='" + name + '\'' +
+                '}';
+    }
 }

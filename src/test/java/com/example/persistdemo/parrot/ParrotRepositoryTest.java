@@ -52,7 +52,7 @@ class ParrotRepositoryTest {
 
         assertThat(ParentEntityListener.ON_CREATION_TRACES)
                 .hasSize(1)
-                .contains("1|Echo");
+                .contains("Parrot{id=1,name='Echo'}");
         assertThat(ParentEntityListener.ON_UPDATE_TRACES)
                 .isEmpty();
     }
@@ -73,7 +73,7 @@ class ParrotRepositoryTest {
 
         assertThat(ParentEntityListener.ON_UPDATE_TRACES)
                 .hasSize(1)
-                .contains("100|Echo");
+                .contains("Parrot{id=100,name='Echo'}");
     }
 
 
@@ -92,10 +92,10 @@ class ParrotRepositoryTest {
 
         assertThat(ParentEntityListener.ON_CREATION_TRACES)
                 .hasSize(1)
-                .contains("10|Péco");
+                .contains("Parrot{id=10,name='Péco'}");
 
         assertThat(ParentEntityListener.ON_UPDATE_TRACES)
                 .hasSize(1)
-                .contains("10|Pépé");
+                .contains("Parrot{id=10,name='Pépé'}");
     }
 }

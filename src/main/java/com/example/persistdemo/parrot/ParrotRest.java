@@ -13,13 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.example.persistdemo.parrot;
 
 import com.example.persistdemo.common.ApplicationLog;
 import com.example.persistdemo.common.ErrorResponse;
 import com.example.persistdemo.common.PetUpdate;
-import com.example.persistdemo.mouse.ParentEntityListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -85,8 +83,8 @@ public class ParrotRest {
     @GetMapping(value = "logs", produces = "application/json")
     public ApplicationLog getLogs() {
         ApplicationLog applicationLog = new ApplicationLog();
-        applicationLog.setInstanceTraces(com.example.persistdemo.mouse.ParentEntityListener.INSTANCE_CREATION_TRACES);
-        applicationLog.setOnCreationTraces(com.example.persistdemo.mouse.ParentEntityListener.ON_CREATION_TRACES);
+        applicationLog.setInstanceTraces(ParentEntityListener.INSTANCE_CREATION_TRACES);
+        applicationLog.setOnCreationTraces(ParentEntityListener.ON_CREATION_TRACES);
         applicationLog.setOnUpdateTraces(ParentEntityListener.ON_UPDATE_TRACES);
         return applicationLog;
     }

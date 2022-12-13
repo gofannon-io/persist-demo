@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.example.persistdemo.mouse;
 
 
@@ -55,9 +54,9 @@ public class ParentEntityListener {
 
     @PrePersist
     public void onCreation(Object rawEntity) {
-        if (rawEntity instanceof Mouse typedEntity) {
+        if (rawEntity instanceof ParentEntity typedEntity) {
             System.out.println("onCreation " + rawEntity);
-            ON_CREATION_TRACES.add("Create mouse " + typedEntity.getName() + " (id=" + typedEntity.getId() + ") from listener " + instanceId);
+            ON_CREATION_TRACES.add("Create " + typedEntity + " from listener " + instanceId);
             Date now = now();
             typedEntity.setCreationDate(now);
             typedEntity.setUpdateDate(now);
@@ -68,12 +67,12 @@ public class ParentEntityListener {
         return new Date(clock.millis());
     }
 
-    
+
     @PreUpdate
     public void onUpdate(Object rawEntity) {
         if (rawEntity instanceof Mouse typedEntity) {
             System.out.println("onUpdate " + rawEntity);
-            ON_UPDATE_TRACES.add("Update mouse " + typedEntity.getName() + " (id=" + typedEntity.getId() + ") from listener " + instanceId);
+            ON_UPDATE_TRACES.add("Update " + typedEntity + " from listener " + instanceId);
             Date now = now();
             typedEntity.setUpdateDate(now);
         }
